@@ -53,7 +53,7 @@ export const softDelete = async (req, res, next) => {
     }
 };
 
-// DELETE /api/menu-items/:id (no se usa)
+// DELETE /api/menu-items/:id (NO SE USA)
 export const remove = async (req, res, next) => {
     try {
         const item = await menuItemService.remove(req.params.id);

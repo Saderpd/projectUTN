@@ -15,21 +15,21 @@ export const getById = async (id) => {
 };
 
 // CREATE: Crea un plato (deleted_at lo maneja el servicio, no el cliente)
-export const create = async (data) => {
-    const { deleted_at, ...fields } = data;
-    return MenuItem.create(fields);
+export const create = async (data = {}) => {
+  const { deleted_at, ...fields } = data;
+  return MenuItem.create(fields);
 };
 
 // UPDATE: Actualiza un plato activo y valida los cambios
-export const update = async (id, data) => {
-    const { deleted_at, ...fields } = data;
-    return MenuItem.findOneAndUpdate({ _id: id, ...ACTIVE }, fields, {
-        returnDocument: "after",
-        runValidators: true,
-    });
+export const update = async (id, data = {}) => {
+  const { deleted_at, ...fields } = data;
+  return MenuItem.findOneAndUpdate({ _id: id, ...ACTIVE }, fields, {
+    returnDocument: "after",
+    runValidators: true,
+  });
 };
 
-// Soft Delete: Solo "borra" platos activos 
+// Soft Delete
 export const softDelete = async (id) => {
     return MenuItem.findOneAndUpdate(
         { _id: id, ...ACTIVE },

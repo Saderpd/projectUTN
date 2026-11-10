@@ -1,8 +1,19 @@
 // No hay try/catch porque Express 5 lo hace solo:
 // Si una función async lanza un error, Express lo agarra y se lo manda al middleware de errores.
+import { ErrorApp } from "../utils/errorApp.js";
 
 // Middleware de errores:
 export const errorHandler = (error, req, res, next) => {
+
+    // Errores de negocio lanzados desde los services
+    if (error instanceof ErrorApp) {
+        return res.status(error.status).json({ error: error.message });
+    }
+
+    // JSON mal formado en el body de la request
+    if (error.type === "entity.parse.failed") {
+        return res.status(400).json({ error: "El JSON enviado no es válido" });
+    }
 
     // Datos que no pasan las validaciones del modelo
     if (error.name === "ValidationError") {

@@ -30,7 +30,7 @@ const menuItemSchema = new mongoose.Schema(
         },
         image_url: { type: String, trim: true },
 
-        // Soft delete
+        // Soft delete: null = plato activo, fecha = plato borrado
         deleted_at: { type: Date, default: null },
     },
     {
