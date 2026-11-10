@@ -1,4 +1,4 @@
-//conexion a MongoDB
+// Conexion a MongoDB
 import mongoose from "mongoose";
 
 export const connectDB = async () => {
@@ -7,6 +7,7 @@ export const connectDB = async () => {
         console.log(`MONGODB connected · "${mongoose.connection.name}"`);
     } catch (error) {
         console.error("MONGODB connection error:", error.message)
-        process.exit(1) //corta la api si no hay base
+        // Corta la api si no hay base
+        process.exit(1) 
     }
 }
