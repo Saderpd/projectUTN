@@ -32,6 +32,15 @@ catering:
 ├── app.js          # Configuración de la aplicación Express
 └── server.js       # Punto de entrada que arranca el servidor
 ```
+## Poblamiento de la Base de Datos (Seed)
+
+El proyecto incluye un script de **Seed** para inicializar la base de datos local con los documentos de prueba requeridos por el trabajo práctico (usuarios, ítems de menú, órdenes, personal de catering y eventos).
+
+### Requisitos Previos
+
+1. Tener MongoDB corriendo localmente (o disponer de un cluster en MongoDB Atlas).
+2. Contar con un archivo `.env` en la raíz del proyecto configurado con la variable `MONGO_URI`.
+3. usar **npm run seed**
 
 ## Endpoints Principales (API Reference)
 
