@@ -42,6 +42,8 @@ El proyecto incluye un script de **Seed** para inicializar la base de datos loca
 2. Contar con un archivo `.env` en la raíz del proyecto configurado con la variable `MONGO_URI`.
 3. usar **npm run seed**
 
+> ⚠️ **¡Advertencia importante para mi! Este script es destructivo:** Al ejecutarse, **borra por completo** los datos actuales de las colecciones `users`, `menu_items` y `orders` de la base de datos configurada en `MONGODB_URI`, reemplazándolos únicamente por los datos de prueba.
+
 ## Endpoints Principales (API Reference)
 
 ### Menú — `/api/menu-items`
