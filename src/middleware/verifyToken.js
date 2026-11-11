@@ -1,4 +1,3 @@
-// Middleware JWT
 import jwt from "jsonwebtoken";
 
 // Verifica el JWT del header Authorization: Bearer <token>

@@ -1,96 +1,81 @@
-Modelo de la Base de Datos (Mongodb)
+# Modelo de la Base de Datos (MongoDB)
 
-users = {
-  _id: ObjectId("..."),
-  first_name: String,
-  last_name: String,
-  email: String,            // Único
-  password_hash: String,
-  phone: String,
-  address: {
-    street: String,
-    number: String,
-    city: String
-  },
-  role: String,             // "client" | "staff" | "admin"
-  created_at: Date,
-  updated_at: Date,
-  deleted_at: Date          // null si está activo
-}
+Convenciones:
+- Colecciones y campos en `snake_case`.
+- Precios y totales como entero en centavos.
+- Todas las colecciones llevan `_id`, `created_at`, `updated_at` y `deleted_at` (`null` = activo).
+- `ref` indica una referencia a otra colección.
 
-menu_items = {
-  _id: ObjectId("..."),
-  name: String,
-  description: String,
-  category: String,         // "dulce" | "salado"
-  price: Number,            // Entero en centavos
-  image_url: String,
-  created_at: Date,
-  updated_at: Date,
-  deleted_at: Date          // null si está activo
-}
+---
 
-orders = {
-  _id: ObjectId("..."),
-  order_number: String,     // Único
-  client_id: ObjectId("..."), // ref users
-  status: String,           // "pending" | "confirmed" | "preparing" | "ready" | "delivered" | "cancelled"
-  items: [
-    {
-      item_id: ObjectId("..."), // ref menu_items
-      name: String,
-      quantity: Number,
-      unit_price: Number    // Entero en centavos
-    }
-  ],
-  delivery: {
-    type: String,           // "pickup" | "delivery"
-    address: {
-      street: String,
-      number: String,
-      city: String
-    }
-  },
-  notes: String,
-  total: Number,            // Entero en centavos
-  created_at: Date,
-  updated_at: Date,
-  deleted_at: Date          // null si está activo
-}
+## Colecciones
 
-catering_events = {
-  _id: ObjectId("..."),
-  client_id: ObjectId("..."), // ref users
-  status: String,           // "requested" | "quoted" | "confirmed" | "completed" | "cancelled"
-  event_date: Date,
-  catering_type: String,    // "buffet" | "plated" | "food_station" | "drop_off" | "passed_hors_doeuvres"
-  event_location: {
-    street: String,
-    number: String,
-    city: String
-  },
-  details: String,
-  guest_count: Number,
-  price_per_person: Number, // Entero en centavos
-  total: Number,            // Entero en centavos
-  payment_status: String,   // "unpaid" | "deposit_paid" | "paid_in_full"
-  assigned_crew: [
-    {
-      crew_id: ObjectId("...") // ref catering_crew  
-    }
-  ],
-  created_at: Date,
-  updated_at: Date,
-  deleted_at: Date          // null si está activo
-}
+### `users`
 
-catering_crew = {
-  _id: ObjectId("..."),
-  first_name: String,
-  last_name: String,
-  phone: String,
-  role: String,             // "chef" | "waiter" | "delivery" | "catering_manager"
-  created_at: Date,
-  updated_at: Date,
-  deleted_at: Date          // null = activo (disponible) | Fecha = dado de baja
-}
+| Campo | Tipo | Detalle |
+| :--- | :--- | :--- |
+| `first_name` | String | |
+| `last_name` | String | |
+| `email` | String | Único |
+| `password_hash` | String | Hasheada con bcrypt |
+| `phone` | String | |
+| `address` | Object | `{ street, number, city }` |
+| `role` | String | `client` \| `staff` \| `admin` |
+
+### `menu_items`
+
+| Campo | Tipo | Detalle |
+| :--- | :--- | :--- |
+| `name` | String | |
+| `description` | String | |
+| `category` | String | `dulce` \| `salado` |
+| `price` | Number | Centavos |
+| `image_url` | String | |
+
+### `orders`
+
+| Campo | Tipo | Detalle |
+| :--- | :--- | :--- |
+| `order_number` | String | Único |
+| `client_id` | ObjectId | ref `users` |
+| `status` | String | `pending` \| `confirmed` \| `preparing` \| `ready` \| `delivered` \| `cancelled` |
+| `items` | Array | `[{ item_id (ref menu_items), name, quantity, unit_price }]` |
+| `delivery` | Object | `{ type: pickup \| delivery, address: { street, number, city } }` |
+| `notes` | String | |
+| `total` | Number | Centavos |
+
+### `catering_events`
+
+| Campo | Tipo | Detalle |
+| :--- | :--- | :--- |
+| `client_id` | ObjectId | ref `users` |
+| `status` | String | `requested` \| `quoted` \| `confirmed` \| `completed` \| `cancelled` |
+| `event_date` | Date | |
+| `catering_type` | String | `buffet` \| `plated` \| `food_station` \| `drop_off` \| `passed_hors_doeuvres` |
+| `event_location` | Object | `{ street, number, city }` |
+| `details` | String | |
+| `guest_count` | Number | |
+| `price_per_person` | Number | Centavos |
+| `total` | Number | Centavos |
+| `payment_status` | String | `unpaid` \| `deposit_paid` \| `paid_in_full` |
+| `assigned_crew` | Array | `[{ crew_id (ref catering_crew) }]` |
+
+### `catering_crew`
+
+| Campo | Tipo | Detalle |
+| :--- | :--- | :--- |
+| `first_name` | String | |
+| `last_name` | String | |
+| `phone` | String | |
+| `role` | String | `chef` \| `waiter` \| `delivery` \| `catering_manager` |
+
+---
+
+## Relaciones
+
+| Desde | Hacia | Campo |
+| :--- | :--- | :--- |
+| `orders` | `users` | `client_id` |
+| `orders` | `menu_items` | `items.item_id` |
+| `catering_events` | `users` | `client_id` |
+| `catering_events` | `catering_crew` | `assigned_crew.crew_id` |

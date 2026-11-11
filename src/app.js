@@ -2,6 +2,7 @@
 import express from "express";
 import cors from "cors";
 import menuItemRoute from "./routes/menuItemRoute.js";
+import orderRoute from "./routes/orderRoute.js";
 import userRoute from "./routes/userRoute.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 
@@ -18,6 +19,7 @@ app.get("/api/health", (req, res) => res.json({ status: "ok" }));
 
 // Agrupadores de ruta
 app.use("/api/menu-items", menuItemRoute);
+app.use("/api/orders", orderRoute);
 app.use("/api/users", userRoute);
 
 // Ruta no encontrada (404)

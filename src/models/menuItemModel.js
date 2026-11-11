@@ -34,7 +34,7 @@ const menuItemSchema = new mongoose.Schema(
         deleted_at: { type: Date, default: null },
     },
     {
-        // Nombre exacto de la colección en Mongo para que no cree una nueva (aprendí de errores)
+        // Nombre exacto de la colección en Mongo para que no cree una nueva (YA ME PASÓ)
         collection: "menu_items",
 
         timestamps: { createdAt: "created_at", updatedAt: "updated_at" },
